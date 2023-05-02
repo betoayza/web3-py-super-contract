@@ -84,8 +84,8 @@ try:
     print(signed_tx)
 
     # 3
-    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    print(signed_tx)
+    # sended_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    # print(signed_tx)
 
 
 except Exception as error:
