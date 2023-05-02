@@ -53,8 +53,8 @@ try:
         Web3.HTTPProvider("http://127.0.0.1:7545")
     )  # client w3 to cpnnect to ganache
 
-    my_address = "0xEFf1CaD7aE6E999F76Bcd8f8f9BB7785c138E24A"
-    private_key = "0x9a0942a5e4b1e3c8cf50da1b825fb722a17be270a1e586d82ccc2f5b8e375ed9"  # to sign transactions
+    my_address = "0x08a4134686c9c0a422c3eED336b63a7844A77876"
+    private_key = "0xecae89da179e1f11cc3a4303c7e8cb702a8e8980f3b090a3d56af74d7cf16bf6"  # to sign transactions
 
     # deploy
     SuperContract = w3.eth.contract(abi=abi, bytecode=bytecode)
@@ -64,11 +64,12 @@ try:
     nonce = w3.eth.get_transaction_count(my_address)
     print("Nonce:", nonce)
     ## Condiciones del deployeo:
-    ### 1 Contruir la transaccion
+    ### 1 Construir la transaccion
     ### 2 Firmar la transaccion
     ### 3 Enviar la transaccion
 
-    tx = SuperContract.constructor().transact(  # 1
+    # 1
+    tx = SuperContract.constructor().build_transaction(
         {
             "chainId": chain_id,
             "gasPrice": w3.eth.gas_price,  # no siempre es necesario
@@ -76,17 +77,16 @@ try:
             "nonce": nonce,  # contador de transaferencias de la address
         }
     )
-    print(tx)
+    print(tx, type(tx))
 
+    # 2
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     print(signed_tx)
 
-    """
-    signed_transaction = w3.eth.account.sign_transaction(
-        transaction, private_key=private_key
-    )
-    print(signed_transaction)
+    # 3
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    print(signed_tx)
 
-        """
+
 except Exception as error:
-    print("\nHubo un error: ", colored(error, "red"))
+    print(colored("\nHubo un error: ", "yellow"), colored(error, "red"))
