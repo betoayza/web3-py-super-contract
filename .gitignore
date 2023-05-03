@@ -1,0 +1,3 @@
+#ENV
+# git rm --cached .env (Cuando ya está subido al repo remoto)
+.env 

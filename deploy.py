@@ -2,8 +2,12 @@ from solcx import compile_standard, install_solc
 import json
 from web3 import Web3
 from termcolor import colored
+from dotenv import load_dotenv
+import os
 
+load_dotenv() # carga el ".env" al principio
 
+# Extraer el codigo del contrato
 with open("./SuperContract.sol") as file:
     code = file.read()
     # print(code)
@@ -34,10 +38,10 @@ with open("compiled_code.json", "w") as file:
     print("Codigo compilado guardado!")
 
 # Para desplegar necesito:
-# 1- Bytecode
-# 2- ABI
+## 1- Bytecode
+## 2- ABI
 
-# preparing deploy...
+# PREPARING DEPLOY...
 bytecode = compiled_sol["contracts"]["SuperContract.sol"]["SuperContract"]["evm"][
     "bytecode"
 ]["object"]
@@ -54,12 +58,11 @@ try:
     )  # client w3 to cpnnect to ganache
 
     my_address = "0x08a4134686c9c0a422c3eED336b63a7844A77876"
-    private_key = "0xecae89da179e1f11cc3a4303c7e8cb702a8e8980f3b090a3d56af74d7cf16bf6"  # to sign transactions
+    private_key = os.getenv("PRIVATE_KEY")  # to sign transactions
 
-    # deploy
-    SuperContract = w3.eth.contract(abi=abi, bytecode=bytecode)
+    # DEPLOY
+    SuperContract = w3.eth.contract(abi=abi, bytecode=bytecode) # crea una instancia del contrato
     print(SuperContract)
-    print(SuperContract.constructor())
 
     nonce = w3.eth.get_transaction_count(my_address)
     print("Nonce:", nonce)
@@ -77,8 +80,9 @@ try:
             "nonce": nonce,  # contador de transaferencias de la address
         }
     )
+    # Contract.constructor() crea una instancia nueva del contrato en la red de ETH, necesaria para el deploy
     print(tx, type(tx))
-
+ 
     # 2
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     print(signed_tx)
