@@ -102,6 +102,7 @@ try:
         super_contract.functions.getNumber().call()
     )  # llama a la funcion "retrive()" del contrato con la función "call()"
 
+    # Interactuando con una transaccion nueva con un contrato ya deployado
     store_transaction = super_contract.functions.registerNumber(20).build_transaction(
         {
             "chainId": chain_id,
