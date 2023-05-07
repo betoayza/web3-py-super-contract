@@ -51,20 +51,22 @@ abi = json.loads(
 
 # print({"bytecode": bytecode, "abi": abi}, "Listo para hacer el deploy!")
 
-chain_id = 1337  # id de la blockchain
+chain_id = 11155111  # id de la testnet de Sepolia
 try:
     w3 = Web3(
-        Web3.HTTPProvider("http://127.0.0.1:7545")
+        Web3.HTTPProvider(
+            "https://sepolia.infura.io/v3/d4548043065a4a748fc63fac4ef05340"
+        )
     )  # client w3 to cpnnect to ganache
 
-    my_address = "0xdF9De2D0693037C194A4073D66f816aC1bdD3650"
+    my_address = "0xBF3fEba375bd24a2Fb1E599d8394e62C67E8C062"
     private_key = os.getenv("PRIVATE_KEY")  # to sign transactions
 
     # DEPLOY
     SuperContract = w3.eth.contract(
         abi=abi, bytecode=bytecode
     )  # crea una instancia del contrato
-    #print(SuperContract)
+    # print(SuperContract)
 
     nonce = w3.eth.get_transaction_count(my_address)
     print("Nonce:", nonce)
